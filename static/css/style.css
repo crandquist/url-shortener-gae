@@ -1,0 +1,28 @@
+body {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+}
+
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card-header {
+    font-weight: bold;
+}
+
+.text-truncate {
+    max-width: 500px;
+    display: inline-block;
+}
+
+footer {
+    margin-top: auto;
+}
