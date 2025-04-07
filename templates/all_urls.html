@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}All Shortened URLs{% endblock %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-header bg-secondary text-white">
+        <h1 class="h4 mb-0">All Shortened URLs</h1>
+    </div>
+    <div class="card-body">
+        {% if urls %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Short Code</th>
+                        <th>Original URL</th>
+                        <th>Created</th>
+                        <th>Clicks</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for url in urls %}
+                    <tr>
+                        <td><a href="/{{ url.key.name }}" target="_blank">{{ url.key.name }}</a></td>
+                        <td class="text-truncate" style="max-width: 300px;"><a href="{{ url.long_url }}" target="_blank">{{ url.long_url }}</a></td>
+                        <td>{{ url.created.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>{{ url.access_count }}</td>
+                        <td><a href="/stats/{{ url.key.name }}" class="btn btn-sm btn-info">Stats</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            No URLs have been shortened yet.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
