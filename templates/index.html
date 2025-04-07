@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}URL Shortener{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h1 class="h4 mb-0">Shorten Your URL</h1>
+            </div>
+            <div class="card-body">
+                <form action="/shorten" method="POST">
+                    <div class="input-group mb-3">
+                        <input type="text" name="url" class="form-control" placeholder="Enter a long URL" required>
+                        <button class="btn btn-primary" type="submit">Shorten</button>
+                    </div>
+                </form>
+
+                {% if short_url %}
+                <div class="alert alert-success mt-4">
+                    <h5>Your shortened URL:</h5>
+                    <div class="input-group">
+                        <input type="text" class="form-control" value="{{ short_url }}" id="shortenedUrl" readonly>
+                        <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard()">Copy</button>
+                    </div>
+                    <p class="mt-2">Original URL: <a href="{{ original_url }}" target="_blank">{{ original_url }}</a></p>
+                    <p>View statistics: <a href="/stats/{{ short_url.split('/')[-1] }}">Stats Page</a></p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if recent_urls %}
+        <div class="card mt-4 shadow">
+            <div class="card-header bg-secondary text-white">
+                <h2 class="h5 mb-0">Recently Shortened URLs</h2>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                    {% for url in recent_urls %}
+                    <a href="/stats/{{ url.key.name }}" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ url.key.name }}</h5>
+                            <small>{{ url.created.strftime('%Y-%m-%d %H:%M') }}</small>
+                        </div>
+                        <p class="mb-1 text-truncate">{{ url.long_url }}</p>
+                        <small>Clicks: {{ url.access_count }}</small>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+function copyToClipboard() {
+    var copyText = document.getElementById("shortenedUrl");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    alert("Copied the URL: " + copyText.value);
+}
+</script>
+{% endblock %}
