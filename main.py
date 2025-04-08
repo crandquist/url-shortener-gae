@@ -100,19 +100,27 @@ def redirect_to_url(short_code):
 
 @app.route('/stats/<short_code>')
 def stats(short_code):
-    url_mapping = get_url(short_code)
-    if not url_mapping:
-        abort(404)
-    
-    visits = get_visits(short_code)
-    visit_count = url_mapping['access_count']
-    
-    return render_template('stats.html',
-                          short_code=short_code,
-                          long_url=url_mapping['long_url'],
-                          created=url_mapping['created'],
-                          visit_count=visit_count,
-                          visits=visits)
+    try:
+        url_mapping = get_url(short_code)
+        if not url_mapping:
+            abort(404)
+        
+        visits = get_visits(short_code)
+        visit_count = url_mapping['access_count']
+        
+        return render_template('stats.html',
+                            short_code=short_code,
+                            long_url=url_mapping['long_url'],
+                            created=url_mapping['created'],
+                            visit_count=visit_count,
+                            visits=visits)
+    except Exception as e:
+        # Log the error if possible
+        print(f"Error in stats page: {str(e)}")
+        # Return a simpler stats page with minimal information
+        return render_template('simple_stats.html',
+                            short_code=short_code,
+                            error=str(e))
 
 @app.route('/all')
 def all_urls():
