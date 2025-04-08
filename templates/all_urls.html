@@ -27,7 +27,6 @@
                         <td class="text-truncate" style="max-width: 300px;"><a href="{{ url.long_url }}" target="_blank">{{ url.long_url }}</a></td>
                         <td>{{ url.created.strftime('%Y-%m-%d %H:%M') }}</td>
                         <td>{{ url.access_count }}</td>
-                        <td><a href="/stats/{{ url.key.name }}" class="btn btn-sm btn-info">Stats</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>
